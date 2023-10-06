@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from fastapi import status
 from models import Curso
 from fastapi import Depends
-from typing import Any
+from typing import Any, Dict, List
 from time import sleep
 
 
@@ -15,7 +15,10 @@ def fake_db_connection():
         print('Fechando conexão!')
         sleep(5)
 
-app = FastAPI()
+app = FastAPI(
+    title='API-curso-geek-university', 
+    version='0.0.1',
+    description='uma API de estudo do fastAPI')
 
 cursos = {
     1: {
@@ -31,7 +34,10 @@ cursos = {
 }
 
 
-@app.get('/cursos')
+@app.get('/cursos', 
+         description='Retorno todos os cursos ou uma lista vazia', 
+         summary='Retorna todos os cursos',
+         )
 async def get_cursos(db: Any = Depends(fake_db_connection)):
     return cursos
 
